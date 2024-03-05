@@ -6,9 +6,13 @@ import {PATH_HOME, PATH_LOGIN, PATH_REGISTER} from "@/router/path.ts";
  */
 export const routes: RouteRecordRaw[] = [
     {
+        path: "/",
+        redirect: PATH_HOME
+    },
+    {
         name: "Login",
         path: PATH_LOGIN,
-        component: () => import("components/Login.vue"),
+        component: () => import("@/components/Login.vue"),
         meta: {
             title: "登录",
             requireAuth: false
@@ -17,7 +21,7 @@ export const routes: RouteRecordRaw[] = [
     {
         name: "Register",
         path: PATH_REGISTER,
-        component: () => import("components/Register.vue"),
+        component: () => import("@/components/Register.vue"),
         meta: {
             title: "注册账号",
             requireAuth: false,
@@ -26,7 +30,7 @@ export const routes: RouteRecordRaw[] = [
     {
         name: "Home",
         path: PATH_HOME,
-        component: () => import("views/BackendHome.vue"),
+        component: () => import("@/views/BackendHome.vue"),
         meta: {
             title: "后台首页",
             requireAuth: true

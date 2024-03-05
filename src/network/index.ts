@@ -1,6 +1,6 @@
 import axios, {AxiosResponse, InternalAxiosRequestConfig} from "axios";
-import {BaseConfig} from "network/type";
-import {endProgressBar, startProgressBar} from "utils/progress"
+import {BaseConfig} from "@/network/type";
+import {endProgressBar, startProgressBar} from "@/utils/progress"
 
 const bases = {
     development: "http://localhost:8080"
@@ -48,6 +48,9 @@ const requestInterceptor = (config: InternalAxiosRequestConfig<any>) => {
  * @param response
  */
 const responseInterceptor = (response: AxiosResponse) => {
+    if (response.status !== 200) {
+
+    }
     endProgressBar();
     return response.data;
 }

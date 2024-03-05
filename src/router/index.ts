@@ -1,7 +1,8 @@
 import {routes} from "./routes.ts"
 import {createRouter, createWebHistory} from "vue-router";
-import {endProgressBar, startProgressBar} from "utils/progress";
-import {getToken} from "utils/token";
+import {endProgressBar, startProgressBar} from "@/utils/progress";
+import {getToken} from "@/utils/token";
+
 
 const router = createRouter({
     routes: routes,
