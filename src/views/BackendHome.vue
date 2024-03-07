@@ -1,8 +1,19 @@
 <script lang="ts" setup>
 import {ref} from "vue";
 import {backendRoutes} from "@/config/routes.ts";
+import {useUserStore} from "@/stores/user.ts";
+import {RouteItem} from "@/types/util/type";
 
 let activePath = ref<string>("");
+const userStore = useUserStore();
+
+async function changeMenu(item: RouteItem) {
+  if (item.goto === null) {
+    return;
+  }
+  await item.goto();
+  activePath.value = item.path;
+}
 </script>
 
 <template>
@@ -13,13 +24,13 @@ let activePath = ref<string>("");
         <span>商家后台系统</span>
       </div>
       <div>
-        <span>你好</span>
+        <span>你好,{{ userStore.userInfo.username }}</span>
         <el-image
+            :src="userStore.userInfo.url"
             fit="fill"
-            src="https://tse4-mm.cn.bing.net/th/id/OIP-C.ytZ3w0NP3JfGHzPzNXO25QAAAA?pid=ImgDet&rs=1"
             style="width: 50px; height: 50px; margin: 0 30px; cursor: pointer;">
         </el-image>
-        <el-button type="info">退出</el-button>
+        <el-button type="info" @click="userStore.logout">退出</el-button>
       </div>
     </el-header>
     <el-container id="main">
@@ -45,7 +56,7 @@ let activePath = ref<string>("");
                 :key="path.title"
                 :index="path.title"
                 class="sub-menu-item"
-                @click="item.goto">
+                @click="changeMenu(item)">
               <template #title>
                 <el-icon>
                   <component :is="path.icon"></component>

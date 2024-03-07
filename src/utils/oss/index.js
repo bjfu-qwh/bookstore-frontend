@@ -1,5 +1,5 @@
 import OSS from "ali-oss";
-import {conf} from "../../config/oss-config.js"
+import {conf} from "@/config/oss-config.js"
 import {createUUID} from "../uuid.ts";
 
 const tool = new OSS(
@@ -7,6 +7,7 @@ const tool = new OSS(
 );
 
 const PREFIX_BOOK = "book";
+const PREFIX_USER = "user";
 
 
 /**
@@ -14,17 +15,28 @@ const PREFIX_BOOK = "book";
  * @param prefix 需要上传的图片目录前缀，比如"book"等
  * @param file 文件实体数据
  */
-function uploadSingleImg(prefix, {file}) {
+async function uploadSingleImg(prefix, {file}) {
     const fileName = `book/${createUUID()}.jpeg`;
-    tool.put(fileName, file).then(
-        ({res, url, name}) => {
-            console.log(res, url, name);
-            return url;
-        }).catch((error) => {
-        console.log(error);
-    });
+    const result = await tool.put(fileName, file);
+    return result.url;
 }
 
-export function uploadSingleBookImg({file}) {
-    return uploadSingleImg(PREFIX_BOOK, {file});
+export async function uploadSingleBookImg({file}) {
+    return await uploadSingleImg(PREFIX_BOOK, {file});
+}
+
+export async function uploadSingleUserImg({file}) {
+    return await uploadSingleImg(PREFIX_USER, {file});
+}
+
+/**
+ * 删除单个已经上传的文件
+ * @param path 文件的完整路径
+ */
+export async function deleteSingle(path) {
+    const prefix = `https://${conf.region}/.aliyuncs.com`;
+    path = path.replace(prefix, "");
+    const result = await tool.delete(path);
+    console.log(result);
+    return true;
 }

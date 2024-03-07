@@ -1,6 +1,10 @@
 import axios, {AxiosResponse, InternalAxiosRequestConfig} from "axios";
-import {BaseConfig} from "@/network/type";
+import {BaseConfig} from "./type";
 import {endProgressBar, startProgressBar} from "@/utils/progress"
+import {getToken} from "@/utils/token";
+import {ElMessage} from "element-plus";
+import {gotoLogin} from "@/router/methods.ts";
+import {ResponseCode} from "@/network/enum.ts";
 
 const bases = {
     development: "http://localhost:8080"
@@ -36,7 +40,7 @@ function createBaseConfig(env: string, timeout: number) {
  */
 const requestInterceptor = (config: InternalAxiosRequestConfig<any>) => {
     startProgressBar();
-    const token: string = localStorage.getItem("token") as string
+    const token: string = getToken() as string
     if (token) {
         config.headers!.Authorization = token;
     }
@@ -47,8 +51,21 @@ const requestInterceptor = (config: InternalAxiosRequestConfig<any>) => {
  * 拦截器停止进度条
  * @param response
  */
-const responseInterceptor = (response: AxiosResponse) => {
-    if (response.status !== 200) {
+const responseInterceptor = async (response: AxiosResponse) => {
+    switch (response.data.code) {
+        case ResponseCode.CODE_SUCCESS: {
+            ElMessage.success(response.data.message);
+        }
+            break;
+        case ResponseCode.CODE_NOT_FOUND: {
+            ElMessage.warning(response.data.message);
+        }
+            break;
+        case ResponseCode.CODE_UNAUTHORIZED: {
+            ElMessage.info(`${response.data.message},即将重新登录`);
+            await gotoLogin();
+        }
+            break;
 
     }
     endProgressBar();

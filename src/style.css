@@ -82,3 +82,25 @@ button:focus-visible {
         background-color: #f9f9f9;
     }
 }
+
+form {
+    padding: 1.5rem 0.625rem;
+    margin: 0 auto;
+    border-radius: 0.25rem;
+    width: 80%;
+    border: 1px #ced4da solid;
+}
+
+@media (min-width: 580px) {
+    form {
+        padding: 2.5rem;
+    }
+}
+
+html,
+body,
+#app {
+    height: 100%;
+    width: 100%;
+}
+

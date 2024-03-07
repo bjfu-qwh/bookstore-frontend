@@ -7,7 +7,7 @@ import {PATH_HOME, PATH_LOGIN, PATH_REGISTER} from "@/router/path.ts";
 export const routes: RouteRecordRaw[] = [
     {
         path: "/",
-        redirect: PATH_HOME
+        redirect: PATH_LOGIN
     },
     {
         name: "Login",

@@ -17,6 +17,7 @@ export const backendRoutes: RouteItem[] = [
                 title: "图书列表查询",
                 path: PATH_BMS_LIST,
                 icon: List,
+                goto: null,
                 children: null
             } as RouteItem,
             {
