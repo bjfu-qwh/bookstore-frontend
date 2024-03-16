@@ -8,6 +8,7 @@ const tool = new OSS(
 
 const PREFIX_BOOK = "book";
 const PREFIX_USER = "user";
+const PREFIX_AUTHOR = "author";
 
 
 /**
@@ -39,4 +40,8 @@ export async function deleteSingle(path) {
     const result = await tool.delete(path);
     console.log(result);
     return true;
+}
+
+export async function uploadSingleAuthorAvatar({file}) {
+    return await uploadSingleImg(PREFIX_AUTHOR, {file});
 }

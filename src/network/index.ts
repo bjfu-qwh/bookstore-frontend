@@ -52,21 +52,27 @@ const requestInterceptor = (config: InternalAxiosRequestConfig<any>) => {
  * @param response
  */
 const responseInterceptor = async (response: AxiosResponse) => {
-    switch (response.data.code) {
-        case ResponseCode.CODE_SUCCESS: {
-            ElMessage.success(response.data.message);
-        }
-            break;
-        case ResponseCode.CODE_NOT_FOUND: {
-            ElMessage.warning(response.data.message);
-        }
-            break;
-        case ResponseCode.CODE_UNAUTHORIZED: {
-            ElMessage.info(`${response.data.message},即将重新登录`);
-            await gotoLogin();
-        }
-            break;
+    if (response.data.message !== null) {
+        switch (response.data.code) {
+            case ResponseCode.CODE_SUCCESS: {
+                ElMessage.success(response.data.message);
+            }
+                break;
+            case ResponseCode.CODE_NOT_FOUND: {
+                ElMessage.warning(response.data.message);
+            }
+                break;
+            case ResponseCode.CODE_FORBIDDEN: {
+                ElMessage.error(response.data.message);
+            }
+                break;
+            case ResponseCode.CODE_UNAUTHORIZED: {
+                ElMessage.info(`${response.data.message},即将重新登录`);
+                await gotoLogin();
+            }
+                break;
 
+        }
     }
     endProgressBar();
     return response.data;

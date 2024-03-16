@@ -54,7 +54,7 @@ async function changeMenu(item: RouteItem) {
                 v-for="path in item.children"
                 v-if="item.children!==null"
                 :key="path.title"
-                :index="path.title"
+                :index="path.path"
                 class="sub-menu-item"
                 @click="changeMenu(item)">
               <template #title>

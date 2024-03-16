@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {nations} from "config/nation.ts";
+import {nations} from "@/config/nation.ts";
 import {ref} from "vue";
 
 let selectedNation = ref<string>("");

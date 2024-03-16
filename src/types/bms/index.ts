@@ -1,5 +1,6 @@
 /**
  * 图书上传时需要的接口。
+ * TODO 差一个图书详情页的富文本编辑
  */
 export interface BookUpload {
     /**
@@ -46,10 +47,8 @@ export interface BookUpload {
      * 图书简要说明
      */
     brief: string,
-    /**
-     * 图书详细说明，基于富文本编辑器实现。
-     */
-    description: string
+
+    page: number
 }
 
 export function init() {

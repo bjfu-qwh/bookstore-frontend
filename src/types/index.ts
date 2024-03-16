@@ -1,1 +1,1 @@
-export * from "types/bms"
+export * from "@/types/bms"

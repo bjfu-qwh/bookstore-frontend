@@ -1,5 +1,5 @@
 import {RouteMeta, RouteRecordRaw} from "vue-router";
-import {PATH_HOME, PATH_LOGIN, PATH_REGISTER} from "@/router/path.ts";
+import {PATH_BMS_ADD, PATH_HOME, PATH_LOGIN, PATH_REGISTER} from "@/router/path.ts";
 
 /**
  * 规定vue-router的组件配置
@@ -34,6 +34,17 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: "后台首页",
             requireAuth: true
-        } as RouteMeta
+        } as RouteMeta,
+        children: [
+            {
+                name: "AddBook",
+                path: PATH_BMS_ADD,
+                component: () => import("@/views/bms/AddBook.vue"),
+                meta: {
+                    title: "添加新图书",
+                    requireAuth: true
+                } as RouteMeta
+            }
+        ]
     }
 ];

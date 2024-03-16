@@ -190,7 +190,7 @@ async function uploadUserAvatar({file}: any) {
         </el-icon>
       </el-upload>
     </el-form-item>
-    <el-form-item id="login-form-button-group">
+    <el-form-item id="register-form-button-group">
       <el-button :icon="Check" type="primary"
                  width="100%"
                  @click="checkRegister(registerFormRef)">
