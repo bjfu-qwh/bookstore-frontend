@@ -6,16 +6,24 @@ import {Check, Plus} from "@element-plus/icons-vue";
 import {FormInstance} from "element-plus";
 import {addAuthor} from "@/api";
 
-let authorInfo = ref<NewAuthorDTO>({} as NewAuthorDTO);
+let authorInfo = ref<NewAuthorDTO>({
+  name: '',
+  nation: '',
+  url: '',
+  brief: ''
+} as NewAuthorDTO);
 
 /**
  * 通过这个ref使用子组件数据
  */
-const selectedNation = ref<SelectedNation | undefined>();
+const selectedNation = ref<SelectedNation>({
+  selectedNation: ''
+});
 
 const newAuthorFormRef = ref<FormInstance>();
 
 const checkNewAuthor = async (formEl: FormInstance | undefined) => {
+  authorInfo.value.nation = selectedNation.value.selectedNation;
   if (!formEl) {
     return
   }
@@ -81,5 +89,24 @@ async function uploadAuthorAvatar({file}: any) {
 </template>
 
 <style scoped>
+.avatar-uploader .el-upload {
+  border: 1px dashed var(--el-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
 
+.avatar-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  text-align: center;
+}
 </style>

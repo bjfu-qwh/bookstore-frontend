@@ -1,6 +1,6 @@
-import {DocumentAdd, List, Notebook} from "@element-plus/icons-vue";
-import {PATH_BMS, PATH_BMS_ADD, PATH_BMS_LIST} from "@/router/path.ts";
-import {gotoAddBook} from "@/router/methods.ts";
+import {DocumentAdd, List, Notebook, User} from "@element-plus/icons-vue";
+import {PATH_AUTHOR, PATH_AUTHOR_ADD, PATH_BMS, PATH_BMS_ADD, PATH_BMS_LIST} from "@/router/path.ts";
+import {gotoAddAuthor, gotoAddBook} from "@/router/methods.ts";
 import {RouteItem} from "@/types/util/type";
 
 /**
@@ -28,6 +28,21 @@ export const backendRoutes: RouteItem[] = [
                 children: null
             } as RouteItem
         ],
+    } as RouteItem,
+    {
+        title: "作者管理",
+        path: PATH_AUTHOR,
+        icon: User,
+        goto: null,
+        children: [
+            {
+                title: "新增作者",
+                path: PATH_AUTHOR_ADD,
+                icon: DocumentAdd,
+                goto: gotoAddAuthor,
+                children: null
+            } as RouteItem
+        ]
     } as RouteItem
 ];
 

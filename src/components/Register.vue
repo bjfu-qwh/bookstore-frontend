@@ -31,7 +31,6 @@ const checkRegister = async (formEl: FormInstance | undefined) => {
   await formEl.validate(async valid => {
     if (valid) {
       const userData = await register(registerInfo.value);
-      console.log(userData);
       if (userData !== null) {
         setToken(userData.token);
         userStore.updateUserInfo({
@@ -102,9 +101,9 @@ const registerFormRules = <FormRules<UserRegisterDTO>>({
                 if (result !== null && result.code !== ResponseCode.CODE_SUCCESS) {
                   return callback(new Error(result.message));
                 }
+                callback();
               }
-          )
-          callback();
+          );
         },
       },
       phone: {
@@ -122,9 +121,9 @@ const registerFormRules = <FormRules<UserRegisterDTO>>({
                 if (result !== null && result.code !== ResponseCode.CODE_SUCCESS) {
                   return callback(new Error(result.message));
                 }
+                callback();
               }
-          )
-          callback();
+          );
         },
       }
     }
@@ -206,9 +205,7 @@ async function uploadUserAvatar({file}: any) {
   height: 178px;
   display: block;
 }
-</style>
 
-<style>
 .avatar-uploader .el-upload {
   border: 1px dashed var(--el-border-color);
   border-radius: 6px;

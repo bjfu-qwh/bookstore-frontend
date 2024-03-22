@@ -36,6 +36,10 @@ export interface BookUpload {
      */
     amount: number,
     /**
+     * 图书装帧
+     */
+    type: string,
+    /**
      * 图书版本
      */
     edition: string,
@@ -47,10 +51,14 @@ export interface BookUpload {
      * 图书简要说明
      */
     brief: string,
-
+    /**
+     * 图书页码数
+     */
     page: number
 }
 
 export function init() {
-    return {} as BookUpload;
+    return {
+        url: ''
+    } as BookUpload;
 }

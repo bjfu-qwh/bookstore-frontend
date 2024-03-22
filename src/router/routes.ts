@@ -1,5 +1,5 @@
 import {RouteMeta, RouteRecordRaw} from "vue-router";
-import {PATH_BMS_ADD, PATH_HOME, PATH_LOGIN, PATH_REGISTER} from "@/router/path.ts";
+import {PATH_AUTHOR_ADD, PATH_BMS_ADD, PATH_HOME, PATH_LOGIN, PATH_REGISTER} from "@/router/path.ts";
 
 /**
  * 规定vue-router的组件配置
@@ -7,7 +7,7 @@ import {PATH_BMS_ADD, PATH_HOME, PATH_LOGIN, PATH_REGISTER} from "@/router/path.
 export const routes: RouteRecordRaw[] = [
     {
         path: "/",
-        redirect: PATH_LOGIN
+        redirect: PATH_HOME,
     },
     {
         name: "Login",
@@ -42,6 +42,14 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/views/bms/AddBook.vue"),
                 meta: {
                     title: "添加新图书",
+                    requireAuth: true
+                } as RouteMeta
+            }, {
+                name: "AddAuthor",
+                path: PATH_AUTHOR_ADD,
+                component: () => import("@/views/author/NewAuthorForm.vue"),
+                meta: {
+                    title: "添加新作者",
                     requireAuth: true
                 } as RouteMeta
             }

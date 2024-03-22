@@ -17,13 +17,9 @@ const PREFIX_AUTHOR = "author";
  * @param file 文件实体数据
  */
 async function uploadSingleImg(prefix, {file}) {
-    const fileName = `book/${createUUID()}.jpeg`;
+    const fileName = `${prefix}/${createUUID()}.jpeg`;
     const result = await tool.put(fileName, file);
     return result.url;
-}
-
-export async function uploadSingleBookImg({file}) {
-    return await uploadSingleImg(PREFIX_BOOK, {file});
 }
 
 export async function uploadSingleUserImg({file}) {
@@ -44,4 +40,8 @@ export async function deleteSingle(path) {
 
 export async function uploadSingleAuthorAvatar({file}) {
     return await uploadSingleImg(PREFIX_AUTHOR, {file});
+}
+
+export async function uploadSingleBookImg({file}) {
+    return await uploadSingleImg(PREFIX_BOOK, {file});
 }
