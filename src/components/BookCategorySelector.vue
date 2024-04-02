@@ -21,6 +21,7 @@ function mapper(categories: Category[], level: number): CascaderOption[] {
 
 const props: CascaderProps = {
   lazy: true,
+  checkStrictly: true,
   async lazyLoad(node, resolve) {
     const {level} = node
     if (level !== 0) {
@@ -44,6 +45,7 @@ const props: CascaderProps = {
   <el-cascader id="category-selector"
                v-model="selected"
                :props="props"
+               clearable
                placeholder="请选择一个图书分类"
                @change="console.log(selected)">
 
