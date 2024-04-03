@@ -1,10 +1,10 @@
 import {DocumentAdd, List, Notebook, User} from "@element-plus/icons-vue";
 import {PATH_AUTHOR, PATH_AUTHOR_ADD, PATH_BMS, PATH_BMS_ADD, PATH_BMS_LIST} from "@/router/path.ts";
-import {gotoAddAuthor, gotoAddBook} from "@/router/methods.ts";
+import {gotoAddAuthor, gotoAddBook, gotoBookTable} from "@/router/methods.ts";
 import {RouteItem} from "@/types/util/type";
 
 /**
- * 在线图书商城系统
+ * 在线图书商城系统后台路由项配置。
  */
 export const backendRoutes: RouteItem[] = [
     {
@@ -17,7 +17,7 @@ export const backendRoutes: RouteItem[] = [
                 title: "图书列表查询",
                 path: PATH_BMS_LIST,
                 icon: List,
-                goto: null,
+                goto: gotoBookTable,
                 children: null
             } as RouteItem,
             {
@@ -45,4 +45,5 @@ export const backendRoutes: RouteItem[] = [
         ]
     } as RouteItem
 ];
+
 

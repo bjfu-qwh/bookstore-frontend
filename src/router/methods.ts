@@ -1,12 +1,16 @@
 import router from "@/router/index.ts";
-import {PATH_AUTHOR_ADD, PATH_BMS_ADD, PATH_HOME, PATH_LOGIN, PATH_REGISTER} from "@/router/path.ts";
+import {PATH_AUTHOR_ADD, PATH_BMS_ADD, PATH_BMS_LIST, PATH_HOME, PATH_LOGIN, PATH_REGISTER} from "@/router/path.ts";
 
-async function goto(path: string) {
+export async function goto(path: string) {
     await router.push(path);
 }
 
 export async function gotoAddBook() {
     await goto(PATH_BMS_ADD);
+}
+
+export async function gotoBookTable() {
+    await goto(PATH_BMS_LIST);
 }
 
 export async function gotoAddAuthor() {

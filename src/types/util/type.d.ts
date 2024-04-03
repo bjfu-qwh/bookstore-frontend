@@ -22,6 +22,17 @@ export interface RouteItem {
     children: RouteItem[] | null
 }
 
+/**
+ * 面包屑词条项
+ */
+export interface BreadCrumbItem {
+    title: string,
+    /**
+     * vue-router项的真实路径
+     */
+    path: string,
+}
+
 export interface Result<T> {
     code: number,
     message: string,

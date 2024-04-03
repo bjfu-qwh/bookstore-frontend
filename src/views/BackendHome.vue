@@ -2,12 +2,15 @@
 import {ref} from "vue";
 import {backendRoutes} from "@/config/routes.ts";
 import {useUserStore} from "@/stores/user.ts";
+import {useTabsStore} from "@/stores/tabs.ts";
 import {RouteItem} from "@/types/util/type";
+import Tab from "@/components/TabArea.vue";
 
 let activePath = ref<string>("");
 const userStore = useUserStore();
 
 async function changeMenu(item: RouteItem) {
+  useTabsStore().append(item);
   if (item.goto === null) {
     return;
   }
@@ -56,7 +59,7 @@ async function changeMenu(item: RouteItem) {
                 :key="path.title"
                 :index="path.path"
                 class="sub-menu-item"
-                @click="changeMenu(item)">
+                @click="changeMenu(path)">
               <template #title>
                 <el-icon>
                   <component :is="path.icon"></component>
@@ -68,6 +71,7 @@ async function changeMenu(item: RouteItem) {
         </el-menu>
       </el-aside>
       <el-main id="main">
+        <Tab/>
         <router-view/>
       </el-main>
     </el-container>
