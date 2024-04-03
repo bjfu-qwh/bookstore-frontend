@@ -85,47 +85,59 @@ const registerFormRules = <FormRules<UserRegisterDTO>>({
           callback();
         },
       },
-      email: {
+      email: [{
         required: true,
         trigger: "blur",
-        asyncValidator(rule, value, callback) {
-          if (value === "") {
-            return callback(new Error("请输入邮箱"));
-          }
+        message: "请输入邮箱"
+      }, {
+        trigger: 'blur',
+        validator(rule, value, callback) {
           const reg = new RegExp("[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$");
           if (!reg.test(value)) {
             return callback(new Error("请输入正确格式的邮箱"));
           }
+          callback();
+        },
+      }, {
+        trigger: 'blur',
+        validator(rule, value, callback) {
           checkEmail(value).then(
               (result: Result<string> | null) => {
                 if (result !== null && result.code !== ResponseCode.CODE_SUCCESS) {
                   return callback(new Error(result.message));
+                } else {
+                  return callback();
                 }
-                callback();
               }
           );
         },
-      },
-      phone: {
-        required: true,
-        trigger: "blur",
-        asyncValidator(rule, value, callback) {
-          if (value === "") {
-            return callback(new Error("请输入手机号码"));
-          }
-          if (value.length !== 11) {
-            return callback(new Error("请输入格式正确的11位手机号"))
-          }
-          checkPhone(value).then(
-              (result: Result<string> | null) => {
-                if (result !== null && result.code !== ResponseCode.CODE_SUCCESS) {
-                  return callback(new Error(result.message));
-                }
-                callback();
-              }
-          );
+      }],
+
+      phone: [
+        {
+          required: true,
+          message: '请输入手机号码',
+          trigger: 'blur'
+        }, {
+          validator: (rule, value) => value.length === 11,
+          message: "请输入格式正确的11位手机号",
+          trigger: 'blur'
         },
-      }
+        {
+          trigger: 'blur',
+          validator: (rule, value, callback) => {
+            checkPhone(value).then(
+                (result: Result<string> | null) => {
+                  if (result !== null && result.code !== ResponseCode.CODE_SUCCESS) {
+                    return callback(Error(result.message));
+                  } else {
+                    return callback();
+                  }
+                }
+            );
+          }
+        }
+      ]
     }
 );
 

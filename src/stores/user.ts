@@ -4,6 +4,8 @@ import {UserStore} from "@/types/ums";
 import {removeToken} from "@/utils/token";
 import {gotoLogin} from "@/router/methods.ts";
 
+const USER_INFO_STORAGE = "userInfo";
+
 export const useUserStore =
     defineStore("user", () => {
         const userInfo = ref<UserStore>({} as UserStore);
@@ -20,6 +22,7 @@ export const useUserStore =
         async function logout() {
             userInfo.value = {} as UserStore;
             removeToken();
+            localStorage.removeItem(USER_INFO_STORAGE);
             await gotoLogin();
         }
 

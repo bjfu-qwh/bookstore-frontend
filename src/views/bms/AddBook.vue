@@ -3,7 +3,7 @@ import {onMounted, ref} from "vue";
 import {BookUpload, init} from "@/types/bms";
 import AuthorSelector from "@/views/author/AuthorSelector.vue";
 import BookTypeSelector from "@/views/bms/BookTypeSelector.vue";
-import BookCategorySelector from "@/components/BookCategorySelector.vue";
+import BookCategorySelector from "@/views/bms/BookCategorySelector.vue";
 import {newBookFormRules} from "@/rules/bms";
 import {Check, Plus} from "@element-plus/icons-vue";
 import {FormInstance} from "element-plus";
@@ -13,41 +13,29 @@ import {uploadNewBook} from "@/api";
 let book = ref<BookUpload>(init());
 
 /**
- * 通过这个ref使用子组件数据
+ * 通过这些ref使用子组件数据
  */
-const selectedAuthors = ref<number[] | undefined>();
-const selectedBookType = ref<string>("");
-const categorySelected = ref<number>();
-
+let selectedAuthors = ref<number[]>([]);
+let selectedBookType = ref<InstanceType<typeof BookTypeSelector> | null>(null);
+let categorySelected = ref<InstanceType<typeof BookCategorySelector> | null>();
 const newBookFormRef = ref<FormInstance>();
-
-/**
- * 表示图书装帧的数组集合
- */
-
-const bookTypes = [
-  {
-    label: "平装",
-  },
-  {
-    label: "精装",
-  }, {
-    label: "软精装",
-  },
-  {
-    label: "线装"
-  }
-];
 
 const checkNewBook = async (formEl: FormInstance | undefined) => {
   if (!formEl) {
     return;
   }
+  book.value.authors = selectedAuthors.value;
+  book.value.type = <string>selectedBookType?.value?.selectedBookType;
+  book.value.categoryID = <string>categorySelected?.value?.categorySelected;
   await formEl.validate(async valid => {
     if (valid) {
       await uploadNewBook(book.value);
+      book.value = init();
+      selectedAuthors.value = [];
+      selectedBookType?.value?.clear();
+      categorySelected?.value?.clear();
     }
-  })
+  });
 }
 
 const uploadBookUrl = async ({file}: any) => {
@@ -65,7 +53,9 @@ onMounted(() => {
 </script>
 <template>
   <el-form id="new-book-form" ref="newBookFormRef" :model="book"
-           :rules="newBookFormRules" label-position="top">
+           :rules="newBookFormRules"
+           label-position="left"
+           size="large" status-icon>
     <el-form-item label="ISBN" prop="isbn">
       <el-input v-model="book.isbn" placeholder="请输入图书ISBN"
                 type="text"/>
@@ -80,8 +70,66 @@ onMounted(() => {
     </el-form-item>
     <el-row>
       <el-col :span="8">
-        <el-form-item label="图书分类" prop="categoryID">
+        <el-form-item prop="categoryID">
+          <template #label>
+            <span>图书分类</span>
+            <el-tooltip
+                content="点击新增分类"
+                effect="dark"
+                placement="top-start">
+              <el-button :icon="Plus" circle size="small" type="success"/>
+            </el-tooltip>
+          </template>
           <BookCategorySelector ref="categorySelected"></BookCategorySelector>
+        </el-form-item>
+      </el-col>
+      <el-col :span="8">
+        <el-form-item prop="authors">
+          <template #label>
+            <span>图书作者</span>
+            <el-tooltip content="点击新增作者"
+                        effect="dark"
+                        placement="top-end">
+              <el-button :icon="Plus" circle size="small" type="success"/>
+            </el-tooltip>
+          </template>
+          <AuthorSelector ref="selectedAuthors"></AuthorSelector>
+        </el-form-item>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="8">
+        <el-form-item label="页码" prop="page">
+          <el-input v-model="book.page" min="1"
+                    placeholder="请输入图书页码" type="number"/>
+        </el-form-item>
+      </el-col>
+      <el-col :span="8">
+        <el-form-item label="图书价格" prop="price">
+          <el-input v-model="book.price"
+                    placeholder="请输入图书价格(￥)"
+                    type="number"/>
+        </el-form-item>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="8">
+        <el-form-item label="图书库存" prop="amount">
+          <el-input v-model="book.amount" min="1" placeholder="请输入图书库存数"
+                    type="number"/>
+        </el-form-item>
+      </el-col>
+      <el-col :span="8">
+        <el-form-item label="图书装帧" prop="type">
+          <BookTypeSelector ref="selectedBookType"></BookTypeSelector>
+        </el-form-item>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="8">
+        <el-form-item label="版次信息" prop="edition">
+          <el-input v-model="book.edition" placeholder="请输入图书版次"
+                    type="text"/>
         </el-form-item>
       </el-col>
       <el-col :span="8">
@@ -94,41 +142,7 @@ onMounted(() => {
           />
         </el-form-item>
       </el-col>
-      <el-col :span="8">
-        <el-form-item label="图书装帧" prop="type">
-          <el-select id="new-book-type-selector"
-                     v-model="book.type"
-                     placeholder="请指定图书装帧">
-            <el-option v-for="type in bookTypes" :key="type.label"
-                       :label="type.label"
-                       :value="type.label"></el-option>
-          </el-select>
-        </el-form-item>
-      </el-col>
     </el-row>
-    <el-form-item label="作家" prop="authors">
-      <AuthorSelector ref="selectedAuthors"></AuthorSelector>
-    </el-form-item>
-    <el-form-item label="页码" prop="page">
-      <el-input v-model="book.page" min="1"
-                placeholder="请输入图书页码" type="number"/>
-    </el-form-item>
-    <el-form-item label="图书价格" prop="price">
-      <el-input v-model="book.price"
-                placeholder="请输入图书价格(￥)"
-                type="number"/>
-    </el-form-item>
-    <el-form-item label="版次信息" prop="edition">
-      <el-input v-model="book.edition" placeholder="请输入图书版次"
-                type="text"/>
-    </el-form-item>
-    <el-form-item label="图书装帧" prop="type">
-      <BookTypeSelector ref="selectedBookType"></BookTypeSelector>
-    </el-form-item>
-    <el-form-item label="图书库存" prop="amount">
-      <el-input v-model="book.amount" min="1" placeholder="请输入图书库存数"
-                type="number"/>
-    </el-form-item>
     <el-form-item prop="url">
       <el-upload
           :http-request="uploadBookUrl"

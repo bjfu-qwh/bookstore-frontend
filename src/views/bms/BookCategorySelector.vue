@@ -1,15 +1,19 @@
 <script lang="ts" setup>
 import {Category} from "@/types/category";
+import {ref} from "vue";
 import {loadChildren, loadRoots} from "@/api/category";
 import {CascaderOption, CascaderProps} from "element-plus";
 
 let currentCategories = ref<Category[]>([]);
-let selected = ref<[]>();
+let categorySelected = ref<string>('');
 
 defineExpose({
-  selected
+  categorySelected, clear
 });
 
+function clear() {
+  categorySelected.value = '';
+}
 
 function mapper(categories: Category[], level: number): CascaderOption[] {
   return categories.map((item: Category) => ({
@@ -39,15 +43,22 @@ const props: CascaderProps = {
     }
   },
 }
+
+function selectFinalValue(value: string[]) {
+  const len = value.length;
+  categorySelected.value = value[len - 1];
+  console.log(categorySelected.value);
+}
 </script>
 
 <template>
   <el-cascader id="category-selector"
-               v-model="selected"
+               v-model="categorySelected"
                :props="props"
                clearable
+               filterable
                placeholder="请选择一个图书分类"
-               @change="console.log(selected)">
+               @change="selectFinalValue">
 
   </el-cascader>
 </template>

@@ -5,7 +5,7 @@ import {useUserStore} from "@/stores/user.ts";
 
 export async function uploadNewBook(book: BookUpload) {
     const workerID: string = useUserStore().userInfo.id;
-    devInstance.post(`/back/bms/book/add?workerID=${workerID}`, {
+    const result: Result<string> = await (devInstance.post(`/back/bms/book/add?workerID=${workerID}`, {
         isbn: book.isbn,
         name: book.name,
         press: book.press,
@@ -13,20 +13,19 @@ export async function uploadNewBook(book: BookUpload) {
         edition: book.edition,
         url: book.url,
         amount: book.amount,
+        page: book.page,
         price: book.price,
         brief: book.brief,
         authors: book.authors,
         categoryID: book.categoryID,
         type: book.type
-    }).then(
-
-    )
-    console.log(book);
+    }));
+    return result.data;
 }
 
 export async function checkISBN(isbn: string) {
     const result: Result<boolean> = (
         await devInstance.get(`/back/bms/book/isbn?isbn=${isbn}`)
     )
-    return result ? result.data : null;
+    return result.data;
 }

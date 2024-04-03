@@ -7,9 +7,15 @@ interface BookType {
 }
 
 let selectedBookType = ref<string>("");
+
+function clear() {
+  selectedBookType.value = '';
+}
+
 defineExpose({
-  selectedBookType
-})
+  selectedBookType,
+  clear
+});
 
 const types: BookType[] = [
   {

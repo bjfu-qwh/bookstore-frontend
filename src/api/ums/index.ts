@@ -14,11 +14,11 @@ export async function login(login: LoginDTO): Promise<UserInfoDTO | null> {
 }
 
 export async function checkEmail(email: string): Promise<Result<string>> {
-    return (await devInstance.get(`/account/check-email?email=${email}`)).data;
+    return (await devInstance.get(`/account/check-email?email=${email}`));
 }
 
 export async function checkPhone(phone: string): Promise<Result<string>> {
-    return (await devInstance.get(`/account/check-phone?phone=${phone}`)).data;
+    return (await devInstance.get(`/account/check-phone?phone=${phone}`));
 }
 
 export async function register(info: UserRegisterDTO): Promise<UserInfoDTO | null> {

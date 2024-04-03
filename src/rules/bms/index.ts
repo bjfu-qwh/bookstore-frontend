@@ -14,23 +14,26 @@ export const newBookFormRules = ref<FormRules<BookUpload>>({
             callback();
         },
     },
-    isbn: {
-        required: true,
-        trigger: "blur",
-        asyncValidator(rule, value, callback) {
-            if (value === "") {
-                return callback(new Error("请输入图书ISBN"));
-            }
-            checkISBN(value).then(
-                (result: boolean | null) => {
-                    if (result !== null && result) {
-                        return callback(new Error("该ISBN已被注册"));
+    isbn: [
+        {
+            required: true,
+            message: "请输入图书isbn",
+            trigger: 'blur'
+        }, {
+            required: true,
+            trigger: "blur",
+            validator(rule, value, callback) {
+                checkISBN(value).then(
+                    (result: boolean) => {
+                        if (result) {
+                            return callback(new Error("该ISBN已被注册，请重新输入"));
+                        } else {
+                            return callback();
+                        }
                     }
-                    callback();
-                }
-            )
-        },
-    },
+                );
+            },
+        }],
     press: {
         required: true,
         trigger: "blur",
@@ -58,6 +61,7 @@ export const newBookFormRules = ref<FormRules<BookUpload>>({
             if (value.length === 0) {
                 return callback(new Error("请指定图书作者，至少一位"));
             }
+            callback();
         },
     },
     price: {
@@ -110,8 +114,12 @@ export const newBookFormRules = ref<FormRules<BookUpload>>({
             callback();
         }
     },
-    url: {},
-    brief: {},
+    url: {
+        required: false
+    },
+    brief: {
+        required: false
+    },
     type: {
         required: true,
         trigger: "blur",

@@ -5,7 +5,7 @@ import {AuthorSelectItem} from "@/types/author";
 import {allAuthorSelectorItem} from "@/api";
 
 
-let selectedAuthors = ref<number[]>();
+let selectedAuthors = ref<number[]>([]);
 
 defineExpose({
   selectedAuthors
@@ -25,6 +25,7 @@ onMounted(async () => {
 <template>
   <el-select id="author-selector"
              v-model="selectedAuthors"
+             filterable
              multiple
              placeholder="请选择一个以上的作家信息">
     <el-option

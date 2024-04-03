@@ -30,7 +30,7 @@ export interface BookUpload {
     /**
      * 图书分类ID
      */
-    categoryID: number,
+    categoryID: string,
     /**
      * 图书库存
      */
@@ -59,6 +59,19 @@ export interface BookUpload {
 
 export function init() {
     return {
-        url: ''
+        url: '',
+        name: '',
+        page: 0,
+        authors: [],
+        brief: '',
+        amount: 0,
+        categoryID: '',
+        isbn: '',
+        press: '',
+        price: 0.00,
+        type: '',
+        edition: '',
+        published: ''
     } as BookUpload;
 }
+
