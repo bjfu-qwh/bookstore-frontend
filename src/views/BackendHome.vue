@@ -4,19 +4,30 @@ import {backendRoutes} from "@/config/routes.ts";
 import {useUserStore} from "@/stores/user.ts";
 import {useTabsStore} from "@/stores/tabs.ts";
 import {RouteItem} from "@/types/util/type";
-import Tab from "@/components/TabArea.vue";
+import TabArea from "@/components/TabArea.vue";
 
 let activePath = ref<string>("");
 const userStore = useUserStore();
 
+let editableTabsValue = ref<InstanceType<typeof TabArea> | null>(null);
+
 async function changeMenu(item: RouteItem) {
-  useTabsStore().append(item);
   if (item.goto === null) {
     return;
   }
-  await item.goto();
+  useTabsStore().append(item);
   activePath.value = item.path;
+  editableTabsValue!.value!.editableTabsValue = item.path;
+  await item.goto();
 }
+
+watch(
+    () => editableTabsValue.value?.editableTabsValue,
+    (newProps) => {
+      activePath.value = newProps as string;
+    }
+);
+
 </script>
 
 <template>
@@ -71,7 +82,7 @@ async function changeMenu(item: RouteItem) {
         </el-menu>
       </el-aside>
       <el-main id="main">
-        <Tab/>
+        <TabArea ref="editableTabsValue"/>
         <router-view/>
       </el-main>
     </el-container>

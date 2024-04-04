@@ -3,22 +3,28 @@ import {ref} from "vue";
 import {RouteItem} from "@/types/util/type";
 import {ElMessage, TabPaneName, TabsPaneContext} from "element-plus";
 import {useTabsStore} from "@/stores/tabs.ts";
-import {goto} from "@/router/methods.ts";
+import {goto, gotoHome} from "@/router/methods.ts";
+import {PATH_HOME} from "@/router/path.ts";
 
 const editableTabsValue = ref<string>('')
-let tabItems = ref(useTabsStore().tabList);
+let tabItems = useTabsStore().tabList;
+
+defineExpose({
+  editableTabsValue
+});
 
 const handleTabClick = async (tab: TabsPaneContext) => {
+  editableTabsValue.value = tab.paneName as string;
   await goto(tab.paneName as string);
 }
 
 const handleTabClose = async (
     targetName: TabPaneName | undefined
 ) => {
-  if (tabItems.value.length === 1) {
+  if (tabItems.length === 1) {
     return ElMessage.info("至少保留一个页面喔");
   }
-  const tabs = tabItems.value;
+  const tabs = tabItems;
   let activeName = editableTabsValue.value
   if (activeName === targetName) {
     tabs.forEach((tab, index) => {
@@ -30,8 +36,13 @@ const handleTabClose = async (
       }
     })
   }
-  tabItems.value = tabItems.value.filter((tab: RouteItem) => tab.path !== targetName);
-  useTabsStore().tabList = tabItems.value;
+  tabItems = tabItems.filter((tab: RouteItem) => tab.path !== targetName);
+  useTabsStore().tabList = tabItems;
+  if (tabItems.length === 0) {
+    editableTabsValue.value = PATH_HOME;
+    return await gotoHome();
+  }
+  editableTabsValue.value = activeName;
   await goto(activeName);
 }
 
@@ -46,13 +57,8 @@ const handleTabClose = async (
     <el-tab-pane
         v-for="item in tabItems"
         :key="item.title"
+        :label="item.title"
         :name="item.path">
-      <template #label>
-        <span>
-          <el-icon :is="item.icon"></el-icon>
-          <span>{{ item.title }}</span>
-        </span>
-      </template>
     </el-tab-pane>
   </el-tabs>
 </template>
