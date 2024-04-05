@@ -67,7 +67,7 @@ const responseInterceptor = async (response: AxiosResponse) => {
             }
                 break;
             case ResponseCode.CODE_UNAUTHORIZED: {
-                ElMessage.info(`${response.data.message},即将重新登录`);
+                ElMessage.info(response.data.message);
                 await gotoLogin();
             }
                 break;

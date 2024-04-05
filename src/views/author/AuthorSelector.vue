@@ -7,8 +7,12 @@ import {allAuthorSelectorItem} from "@/api";
 
 let selectedAuthors = ref<number[]>([]);
 
+function clear() {
+  selectedAuthors.value = [];
+}
+
 defineExpose({
-  selectedAuthors
+  selectedAuthors, clear
 })
 
 let authors = ref<AuthorSelectItem[]>([]);

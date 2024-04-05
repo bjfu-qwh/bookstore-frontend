@@ -15,7 +15,7 @@ let book = ref<BookUpload>(init());
 /**
  * 通过这些ref使用子组件数据
  */
-let selectedAuthors = ref<number[]>([]);
+let selectedAuthors = ref<InstanceType<typeof AuthorSelector> | null>(null);
 let selectedBookType = ref<InstanceType<typeof BookTypeSelector> | null>(null);
 let categorySelected = ref<InstanceType<typeof BookCategorySelector> | null>();
 const newBookFormRef = ref<FormInstance>();
@@ -24,14 +24,14 @@ const checkNewBook = async (formEl: FormInstance | undefined) => {
   if (!formEl) {
     return;
   }
-  book.value.authors = selectedAuthors.value;
+  book.value.authors = <number[]>selectedAuthors?.value?.selectedAuthors;
   book.value.type = <string>selectedBookType?.value?.selectedBookType;
   book.value.categoryID = <string>categorySelected?.value?.categorySelected;
   await formEl.validate(async valid => {
     if (valid) {
       await uploadNewBook(book.value);
       book.value = init();
-      selectedAuthors.value = [];
+      selectedAuthors?.value?.clear();
       selectedBookType?.value?.clear();
       categorySelected?.value?.clear();
     }
