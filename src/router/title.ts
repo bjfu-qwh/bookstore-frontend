@@ -9,3 +9,5 @@ export const TITLE_ADD_BOOK = "添加新图书";
 export const TITLE_BOOK_LIST = "图书列表";
 
 export const TITLE_ADD_AUTHOR = "添加新作者";
+
+export const TITLE_CATEGORY_TABLE = "图书分类列表"

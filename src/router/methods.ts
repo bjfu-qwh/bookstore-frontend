@@ -1,5 +1,13 @@
 import router from "@/router/index.ts";
-import {PATH_AUTHOR_ADD, PATH_BMS_ADD, PATH_BMS_LIST, PATH_HOME, PATH_LOGIN, PATH_REGISTER} from "@/router/path.ts";
+import {
+    PATH_AUTHOR_ADD,
+    PATH_BMS_ADD,
+    PATH_BMS_LIST,
+    PATH_CATEGORY_TABLE,
+    PATH_HOME,
+    PATH_LOGIN,
+    PATH_REGISTER
+} from "@/router/path.ts";
 
 export async function goto(path: string) {
     await router.push(path);
@@ -27,6 +35,10 @@ export async function gotoRegister() {
 
 export async function gotoHome() {
     await goto(PATH_HOME);
+}
+
+export async function gotoCategoryTable() {
+    await goto(PATH_CATEGORY_TABLE);
 }
 
 

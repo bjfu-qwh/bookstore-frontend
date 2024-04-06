@@ -26,7 +26,7 @@ const checkNewBook = async (formEl: FormInstance | undefined) => {
   }
   book.value.authors = <number[]>selectedAuthors?.value?.selectedAuthors;
   book.value.type = <string>selectedBookType?.value?.selectedBookType;
-  book.value.categoryID = <string>categorySelected?.value?.categorySelected;
+  book.value.categories = <string[]>categorySelected?.value?.categorySelected;
   await formEl.validate(async valid => {
     if (valid) {
       await uploadNewBook(book.value);

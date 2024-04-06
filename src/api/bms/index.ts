@@ -17,7 +17,7 @@ export async function uploadNewBook(book: BookUpload) {
         price: book.price,
         brief: book.brief,
         authors: book.authors,
-        categoryID: book.categoryID,
+        categories: book.categories,
         type: book.type
     }));
     return result.data;

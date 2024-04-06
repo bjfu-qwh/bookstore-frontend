@@ -28,9 +28,9 @@ export interface BookUpload {
      */
     authors: number[],
     /**
-     * 图书分类ID
+     * 图书所有分类ID
      */
-    categoryID: string,
+    categories: string[]
     /**
      * 图书库存
      */
@@ -65,7 +65,7 @@ export function init() {
         authors: [],
         brief: '',
         amount: 0,
-        categoryID: '',
+        categories: [],
         isbn: '',
         press: '',
         price: 0.00,

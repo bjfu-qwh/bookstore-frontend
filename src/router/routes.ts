@@ -1,9 +1,18 @@
 import {RouteMeta, RouteRecordRaw} from "vue-router";
-import {PATH_AUTHOR_ADD, PATH_BMS_ADD, PATH_BMS_LIST, PATH_HOME, PATH_LOGIN, PATH_REGISTER} from "@/router/path.ts";
+import {
+    PATH_AUTHOR_ADD,
+    PATH_BMS_ADD,
+    PATH_BMS_LIST,
+    PATH_CATEGORY_TABLE,
+    PATH_HOME,
+    PATH_LOGIN,
+    PATH_REGISTER
+} from "@/router/path.ts";
 import {
     TITLE_ADD_AUTHOR,
     TITLE_ADD_BOOK,
     TITLE_BOOK_LIST,
+    TITLE_CATEGORY_TABLE,
     TITLE_HOME,
     TITLE_LOGIN,
     TITLE_REGISTER
@@ -68,6 +77,14 @@ export const routes: RouteRecordRaw[] = [
                     title: TITLE_BOOK_LIST,
                     requireAuth: true
                 } as RouteMeta
+            }, {
+                name: "CategoryTreeTable",
+                path: PATH_CATEGORY_TABLE,
+                component: () => import("@/views/category/CategoryTreeTable.vue"),
+                meta: {
+                    title: TITLE_CATEGORY_TABLE,
+                    requireAuth: true
+                }
             }
         ]
     }

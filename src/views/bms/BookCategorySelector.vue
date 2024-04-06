@@ -5,21 +5,21 @@ import {loadChildren, loadRoots} from "@/api/category";
 import {CascaderOption, CascaderProps} from "element-plus";
 
 let currentCategories = ref<Category[]>([]);
-let categorySelected = ref<string>('');
+let categorySelected = ref<string[]>([]);
 
 defineExpose({
   categorySelected, clear
 });
 
 function clear() {
-  categorySelected.value = '';
+  categorySelected.value = [];
 }
 
-function mapper(categories: Category[], level: number): CascaderOption[] {
+function mapper(categories: Category[]): CascaderOption[] {
   return categories.map((item: Category) => ({
     value: item.id,
     label: item.name,
-    leaf: level >= 2,
+    leaf: false
   }));
 }
 
@@ -31,7 +31,7 @@ const props: CascaderProps = {
     if (level !== 0) {
       const children = await loadChildren(node.value);
       if (children !== null) {
-        const nodes = mapper(children, level);
+        const nodes = mapper(children);
         resolve(nodes);
       }
     } else {
@@ -39,16 +39,11 @@ const props: CascaderProps = {
       if (roots !== null) {
         currentCategories.value = roots;
       }
-      resolve(mapper(currentCategories.value, level));
+      resolve(mapper(currentCategories.value));
     }
   },
 }
 
-function selectFinalValue(value: string[]) {
-  const len = value.length;
-  categorySelected.value = value[len - 1];
-  console.log(categorySelected.value);
-}
 </script>
 
 <template>
@@ -57,8 +52,7 @@ function selectFinalValue(value: string[]) {
                :props="props"
                clearable
                filterable
-               placeholder="请选择一个图书分类"
-               @change="selectFinalValue">
+               placeholder="请选择一个图书分类">
 
   </el-cascader>
 </template>
