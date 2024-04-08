@@ -1,35 +1,37 @@
 <script lang="ts" setup>
-import {onBeforeMount, ref, watchEffect} from "vue";
+import {onBeforeMount, ref, watch} from "vue";
 import {Category} from "@/types/category";
 import {Connection, DocumentAdd, Key, Message, Top} from "@element-plus/icons-vue";
 import {addCategory, getByID} from "@/api/category";
 import {appendCategoryFormRules} from "@/rules/category";
 import {FormInstance} from "element-plus";
-
-const props = defineProps<{
-  parent: string
-}>();
+import {parentCategoryID} from "@/types/category/key.ts";
 
 let parentCategoryName = ref<string>('');
 
 let appendCategoryFormRef = ref<FormInstance>();
 
+const parent = inject(parentCategoryID, ref<string>(''));
+
 let category = ref<Category>({
   id: '',
   name: '',
-  parent: props.parent
+  parent: parent.value
 });
 
-watchEffect(async () => {
-  category.value.parent = props.parent;
-  const result: Category | null = await getByID(category.value.parent);
-  if (result !== null) {
-    parentCategoryName.value = result.name;
-  }
-});
+watch(
+    parent,
+    async () => {
+      category.value.parent = parent.value;
+      const result: Category | null = await getByID(parent.value);
+      if (result !== null) {
+        parentCategoryName.value = result.name;
+      }
+    }
+);
 
 onBeforeMount(async () => {
-  const parent: Category | null = await getByID(props.parent);
+  const parent: Category | null = await getByID(category.value.parent);
   if (parent !== null) {
     parentCategoryName.value = parent.name;
   }
@@ -47,7 +49,7 @@ async function checkAndAppendCategory(formEl: FormInstance | undefined) {
           category.value = {
             id: '',
             name: '',
-            parent: props.parent
+            parent: ''
           };
         }
       }

@@ -1,31 +1,25 @@
 <script lang="ts" setup>
+import {inject, ref} from "vue";
 import {CircleCloseFilled} from "@element-plus/icons-vue";
 import AppendCategoryForm from "@/views/category/AppendCategoryForm.vue";
-import {ref, watchEffect} from "vue";
+import {dialogVisible, parentCategoryID, updateDialog, updateParentID} from "@/types/category/key.ts";
 
-const props = defineProps<{
-  parent: string,
-  visible: boolean
-}>();
-
-const visible = ref<boolean>(false);
-const parent = ref<string>('');
-
-watchEffect(() => {
-  visible.value = props.visible;
-});
-
-watchEffect(() => {
-  parent.value = props.parent;
-});
+const parent = inject(parentCategoryID, ref<string>(''));
+const visible = inject(dialogVisible, ref<boolean>(false));
+const updateVisible = inject(updateDialog, null);
+const updateParent = inject(updateParentID, null);
 
 function close() {
-  visible.value = false;
-  parent.value = '';
+  if (updateVisible !== null) {
+    updateVisible(false);
+  }
+  if (updateParent !== null) {
+    updateParent('');
+  }
 }
 
 defineExpose({
-  visible, parent, close
+  visible, parent
 });
 </script>
 
@@ -44,7 +38,7 @@ defineExpose({
         </el-button>
       </div>
     </template>
-    <AppendCategoryForm :parent="props.parent"/>
+    <AppendCategoryForm/>
   </el-dialog>
 </template>
 

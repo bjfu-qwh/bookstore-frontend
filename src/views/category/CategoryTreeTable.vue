@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import {ref} from "vue";
+import {provide, ref} from "vue";
 import {Category} from "@/types/category";
 import {loadChildren, loadRoots} from "@/api/category";
 import type Node from 'element-plus/es/components/tree/src/model/node'
 import {Delete, DocumentAdd} from "@element-plus/icons-vue";
 import AppendCategoryDialog from "@/views/category/AppendCategoryDialog.vue";
+import {dialogVisible, parentCategoryID, updateDialog, updateParentID} from "@/types/category/key.ts";
 
 const props = {
   label: 'name',
@@ -29,26 +30,42 @@ let categoryIDToAppend = ref<string>('');
 
 let appendCategoryDialogVisible = ref<boolean>(false);
 
-let appendCategoryDialogRef = ref<InstanceType<typeof AppendCategoryDialog> | null>(null);
+provide(
+    parentCategoryID,
+    categoryIDToAppend
+);
+
+provide(
+    dialogVisible,
+    appendCategoryDialogVisible
+);
+
+provide(
+    updateDialog,
+    updateDialogVisible
+);
+
+provide(
+    updateParentID,
+    updateParent
+);
+
+function updateDialogVisible(visible: boolean) {
+  appendCategoryDialogVisible.value = visible;
+}
+
+function updateParent(parentID: string) {
+  categoryIDToAppend.value = parentID;
+}
 
 function append(data: Category) {
   categoryIDToAppend.value = data.id;
   appendCategoryDialogVisible.value = true;
 }
 
-watch(
-    () => appendCategoryDialogRef.value?.visible,
-    (visit) => {
-      appendCategoryDialogVisible.value = visit as boolean;
-    }
-);
-
-watch(
-    () => appendCategoryDialogRef.value?.parent,
-    (parent) => {
-      categoryIDToAppend.value = parent as string;
-    }
-);
+async function deleteCategory(data: Category) {
+  console.log(data.id);
+}
 
 </script>
 
@@ -71,14 +88,12 @@ watch(
                      class="category-tool-append"
                      type="success" @click.prevent="append(data)"> 追加 </el-link>
             <el-link :icon="Delete" :underline="false" class="category-tool-delete"
-                     type="danger"> 删除 </el-link>
+                     type="danger" @click.prevent="deleteCategory(data)"> 删除 </el-link>
           </span>
         </span>
     </template>
   </el-tree>
-  <AppendCategoryDialog ref="appendCategoryDialogRef"
-                        :parent="categoryIDToAppend"
-                        :visible="appendCategoryDialogVisible"/>
+  <AppendCategoryDialog/>
 </template>
 
 <style scoped>
