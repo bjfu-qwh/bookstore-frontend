@@ -38,3 +38,15 @@ export async function checkCategoryID(categoryID: string) {
     );
     return result.data;
 }
+
+export function formatCategories(categories: Category[]): string {
+    let result: string = "";
+    const n = categories.length;
+    for (let index = n - 1; index >= 0; --index) {
+        result += `${categories[index].name}`;
+        if (index !== 0) {
+            result += '\\';
+        }
+    }
+    return result;
+}

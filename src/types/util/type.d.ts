@@ -38,3 +38,10 @@ export interface Result<T> {
     message: string,
     data: T
 }
+
+export interface PagedResult<T> {
+    pageID: number,
+    pageSize: number,
+    total: number,
+    data: T[]
+}

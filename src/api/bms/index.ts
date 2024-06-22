@@ -1,6 +1,6 @@
-import {BookUpload} from "@/types";
+import {BookUpload, BookVO} from "@/types";
 import devInstance from "@/network/index.ts"
-import {Result} from "@/types/util/type";
+import {PagedResult, Result} from "@/types/util/type";
 import {useUserStore} from "@/stores/user.ts";
 
 export async function uploadNewBook(book: BookUpload) {
@@ -20,6 +20,12 @@ export async function uploadNewBook(book: BookUpload) {
         categories: book.categories,
         type: book.type
     }));
+    return result.data;
+}
+
+export async function getBookTable(pageID: number, pageSize: number) {
+    const result: Result<PagedResult<BookVO>> = (await
+        devInstance.get(`/back/bms/info/table?pageID=${pageID}&pageSize=${pageSize}`));
     return result.data;
 }
 

@@ -16,6 +16,12 @@ export interface AuthorDetail {
     brief: string
 }
 
+export interface AuthorBrief {
+    id: number,
+    name: string,
+    nation: string
+}
+
 export interface NewAuthorDTO {
     name: string,
     nation: string,
